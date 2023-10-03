@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/atom-one-dark.min.css"
+    />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+
+    <!-- and it's easy to individually load additional languages -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/go.min.js"></script>
+
+    <script>
+      hljs.highlightAll();
+    </script>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f0f0f0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .container {
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        overflow: auto;
+        width: 100%;
+        max-width: 800px;
+        padding: 20px;
+        margin-top: 20px;
+      }
+
+      h1 {
+        color: #007bff;
+      }
+
+      h2 {
+        color: #333;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+      }
+
+      th,
+      td {
+        padding: 10px;
+        text-align: left;
+        border-bottom: 1px solid #ccc;
+      }
+
+      th {
+        background-color: #f0f0f0;
+      }
+
+      tr:nth-child(even) {
+        background-color: #f2f2f2;
+      }
+
+      .form-container {
+        padding: 20px;
+      }
+
+      input[type="text"] {
+        width: 100%;
+        padding: 8px;
+        margin-bottom: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+      }
+
+      button {
+        background-color: #007bff;
+        color: #fff;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+
+      button:hover {
+        background-color: #0056b3;
+      }
+
+      .edit-mode input[type="text"] {
+        border: 1px solid #007bff;
+      }
+
+      .action-buttons {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 20px;
+      }
+
+      .mobile {
+        display: none;
+      }
+
+      code {
+        font-size: large;
+        border-radius: 10px;
+      }
+
+      @media (max-width: 768px) {
+        .mobile {
+          display: block;
+        }
+
+        .desktop {
+          display: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>How to Build an Editable Table in React</h1>
+      <p>
+        Creating an editable table in a React application can greatly enhance
+        the user experience when working with tabular data. In this step-by-step
+        tutorial, we'll walk you through the process of building an editable
+        table in React. By the end of this tutorial, you'll have a functional
+        table where you can add, edit, and delete data.
+      </p>
+
+      <h2>Step 1: Create a Simple Table</h2>
+      <p>In this initial step, we'll create a basic table structure:</p>
+      <ul>
+        <li>
+          Make a normal table with &lt;thead&gt; and &lt;tbody&gt; elements.
+        </li>
+        <li>Fill it with mock data by mapping over it.</li>
+        <li>Store the mock data inside a useState hook.</li>
+      </ul>
+
+      <h4>App.jsx</h4>
+      <pre><code class="language-javascript">  
+        const [tableData, setTableData] = useState(data);
+
+        return (
+            &lt>      
+                &lttable>
+                &ltthead>
+                    &lttr>
+                        &ltth>Name&lt/th>
+                        &ltth>Email&lt/th>
+                        &ltth>Phone&lt/th>                        
+                    &lt/tr>
+                &lt/thead>
+                &lttbody>
+                    {tableData.map((item, index) => {
+                    return (
+                        &lttr key={index}>
+                            &lttd>{item.name}&lt/td>
+                            &lttd>{item.email}&lt/td>
+                            &lttd>{item.phone}&lt/td>
+                        &lt/tr>
+                    );
+                    })}
+                &lt/tbody>
+                &lt/table>
+            &lt/>
+        );
+    </code></pre>
+
+      <h2>Step 2: Create a Form to Add Data</h2>
+      <p>To allow users to add data to the table, follow these steps:</p>
+      <ul>
+        <li>Create a form with appropriate input fields.</li>
+        <li>Add a submit button for submitting the form.</li>
+        <li>
+          Create a new object for form data and store it in a useState hook.
+          Ensure that the object keys match the input field names.
+        </li>
+        <li>Implement a function to handle form changes:</li>
+      </ul>
+      <pre><code class="language-javascript">
+        //  For form creation to enter data into the table
+        const [formData, setFormData] = useState({
+            name: "",
+            email: "",
+            phone: "",
+        });
+
+        const handleFormChange = (event) => {
+            event.preventDefault();
+
+            const { name, value } = event.target;
+            setFormData((prevFormData) => ({ ...prevFormData, [name]: value }));
+        };
+
+        return (
+            &lt>      
+                &lttable>
+                &ltthead>
+                    &lttr>
+                        &ltth>Name&lt/th>
+                        &ltth>Email&lt/th>
+                        &ltth>Phone&lt/th>                        
+                    &lt/tr>
+                &lt/thead>
+                &lttbody>
+                    {tableData.map((item, index) => {
+                    return (
+                        &lttr key={index}>
+                            &lttd>{item.name}&lt/td>
+                            &lttd>{item.email}&lt/td>
+                            &lttd>{item.phone}&lt/td>
+                        &lt/tr>
+                    );
+                    })}
+                &lt/tbody>
+                &lt/table>
+                &ltform>
+                    &ltlabel htmlFor="name">Name&lt/label>
+                    &ltinput type="text" name="name" onChange={handleFormChange} />
+            
+                    &ltlabel htmlFor="email">Email: &lt/label>
+                    &ltinput type="email" name="email" onChange={handleFormChange} />
+            
+                    &ltlabel htmlFor="phone">Phone: &lt/label>
+                    &ltinput type="phone" name="phone" onChange={handleFormChange} />
+            
+                    &ltbutton type="submit">Submit&lt/button>
+                &lt/form>
+
+            &lt/>
+        );
+      </code></pre>
+      <ul>
+        <li>
+          Create a function to handle form submission, where you construct an
+          object with the form data and update the table data stored in the
+          useState variable:
+        </li>
+      </ul>
+      <pre>
+        <code class="language-javascript">
+            const handleFormSubmission = (event) => {
+                event.preventDefault();
+                const newFormData = {
+                    name: formData.name,
+                    email: formData.email,
+                    phone: formData.phone,
+                };
+            
+                const newData = [...tableData, newFormData];
+            
+                setTableData(newData);
+
+                return(
+                    &ltform onSubmit={handleFormSubmission}>
+                    ...previous code
+                    &lt/form>
+                )
+                };
+        </code></pre>
+
+      <h2>Step 3: Toggling Between Read and Edit Modes Inline</h2>
+      <p>For enabling inline editing, you'll need to:</p>
+      <ul>
+        <li>Create two table row components: ReadOnlyRow and EditableRow.</li>
+        <li>
+          Copy the current table row markup to ReadOnlyRow and pass the table
+          data as props.
+        </li>
+        <li>
+          In EditableRow, create input fields that match the number of rows in
+          the table.
+        </li>
+        <li>
+          Render the EditableRow above the ReadOnlyRow, wrapping them inside a
+          fragment.
+        </li>
+        <li>
+          Wrap the entire table within a &lt;form&gt; tag to enable data
+          submission.
+        </li>
+      </ul>
+      <h4>ReadOnlyRow.jsx</h4>
+      <pre><code class="language-javascript">
+        import React from "react";
+
+        const ReadOnlyRow = ({ item, index}) => {
+        return (
+            &lt>
+            &lttr key={index}>
+                &lttd>{item.name}&lt/td>
+                &lttd>{item.email}&lt/td>
+                &lttd>{item.phone}&lt/td>            
+                &lt/td>
+            &lt/tr>
+            &lt/>
+        );
+        };
+
+        export default ReadOnlyRow;
+      </code></pre>
+
+      <h4>EditableRow.jsx</h4>
+      <pre><code class="language-javascript">
+        import React from "react";
+
+        const EditableRow = ({ index }) => {
+
+            
+        return (
+            &lt>
+            &lttr key={index}>
+                &lttd>
+                &ltinput
+                    type="text"
+                    name="name" />
+                &lt/td>
+                &lttd>
+                &ltinput
+                    type="email"
+                    name="email" />
+                &lt/td>
+                &lttd>
+                &ltinput
+                    type="tel"
+                    name="phone" />
+                &lt/td>
+                &lttd>&ltbutton type="submit">Save&lt/button>
+                &ltbutton onClick={handleCancelClick} >Cancel&lt/button>&lt/td>
+            &lt/tr>
+            &lt/>
+        );
+        };
+
+        export default EditableRow;
+      </code></pre>
+
+      <h4>App.jsx</h4>
+      <pre><code class="language-javascript">
+        return (
+            &lt>
+            &ltform>
+                &lttable>
+                &ltthead>
+                    &lttr>
+                    &ltth>Name&lt/th>
+                    &ltth>Email&lt/th>
+                    &ltth>Phone&lt/th>           
+                    &lt/tr>
+                &lt/thead>
+                &lttbody>
+                    {tableData.map((item, index) => {
+                    return (
+                        &lt>
+                        
+                            &ltEditableRow
+                            index={index} />
+                    
+                            &ltReadOnlyRow
+                            item={item}
+                            index={index}/>
+                        
+                        &lt/>
+                    );
+                    })}
+                &lt/tbody>
+                &lt/table>
+            &lt/form>
+            &lt/>
+        )
+      </code></pre>
+
+
+
+
+
+      <h2>Step 4: Implementing Edit Functionality</h2>
+      <p>To implement the edit functionality:</p>
+      <ul>
+        <li>
+          Utilize the table row index in the map function to determine which row
+          should be editable.
+        </li>
+        <li>
+          Create a new useState hook called editRowIndex and initialize it to
+          null. This state variable will track which row is currently being
+          edited.
+        </li>
+        <li>
+          Toggle the edit mode using an if-else statement based on whether
+          editRowIndex matches the row index.
+        </li>
+        <li>
+          To test this, change the editRowIndex to any number
+        </li>
+      </ul>
+      <h4>App.jsx</h4>
+      <pre>
+        <code class="language-javascript">
+            const [editRowIndex, setEditRowIndex] = useState(null);
+
+            return(
+                ..previous code
+
+                {tableData.map((item, index) => {
+                    return (
+                    &lt>
+                        {editRowIndex === index ? (
+                        &ltEditableRow
+                            index={index}/>
+                        ) : (
+                        &ltReadOnlyRow
+                            item={item}
+                            index={index}/>
+                        )}
+                    &lt/>
+                    );
+                })}
+
+            )
+        </code>
+      </pre>
+
+
+
+
+
+
+      <h2>Step 5: Managing Data While Editing</h2>
+      <p>To manage data while editing, follow these steps:</p>
+      <ul>
+        <li>Wrap the table inside a form element.</li>
+        <li>
+          Create a useState hook named editRowData and copy properties from
+          formData.
+        </li>
+        <li>
+          Implement a function, handleEditRowChange, to handle changes in input
+          fields and update editRowData:
+        </li>
+        <li>
+          This is also used to pre populate the inputs fields with present data 
+        </li>
+      </ul>
+    <h4>App.jsx</h4>
+      <pre>
+        <code class="language-javascript">
+            const [editRowData, setEditRowData] = useState({
+                name: "",
+                email: "",
+                phone: "",
+              });
+            
+              const handleEditRowChange = (event) => {
+                event.preventDefault();
+            
+                const { name, value } = event.target;
+                setEditRowData((prevFormData) => ({ ...prevFormData, [name]: value }));
+              };
+            
+            return(
+                ...same code
+                &ltEditableRow
+                    index={index}
+                    editRowData={editRowData}
+                    handleEditRowChange={handleEditRowChange} />
+            )
+        </code>
+      </pre>
+
+
+
+
+
+
+    <h4>EditableRow.jsx</h4>
+      <pre>
+        <code class="language-javascript">
+           import React from "react";
+
+            const EditableRow = ({ index, editRowData, handleEditRowChange }) => {
+
+                
+            return (
+                &lt>
+                &lttr key={index}>
+                    &lttd>
+                    &ltinput
+                        type="text"
+                        name="name"
+                        value={editRowData.name}
+                        onChange={handleEditRowChange}
+                    />
+                    &lt/td>
+                    &lttd>
+                    &ltinput
+                        type="email"
+                        name="email"
+                        value={editRowData.email}
+                        onChange={handleEditRowChange}
+                    />
+                    &lt/td>
+                    &lttd>
+                    &ltinput
+                        type="tel"
+                        name="phone"
+                        value={editRowData.phone}
+                        onChange={handleEditRowChange}
+                    />
+                    &lt/td>
+                    
+                &lt/tr>
+                &lt/>
+            );
+            };
+
+            export default EditableRow;
+
+        </code>
+      </pre>
+
+
+
+
+      <h2>Step 6: Adding a Save Button</h2>
+      <p>
+        To enable saving changes, add a "Save" button in the EditableRow
+        component:
+      </p>
+      <ul>
+        <li>
+          Create an additional &lt;td&gt; element and place a button with
+          type="submit" in the EditableRow component.
+        </li>
+        <li>
+          Implement a handleEditFormSubmit function that constructs an
+          editedData object using editRowData, takes the id from
+          editRowIndex, and updates the contact data.
+        </li>
+      </ul>
+      <h4>App.jsx</h4>
+      <pre>
+        <code class="language-javascript">
+            //            Saving the Data
+            const handleEditFormSubmit = (event) => {
+              event.preventDefault();
+              const editedData = {
+                name: editRowData.name,
+                email: editRowData.email,
+                phone: editRowData.phone,
+              };
+            
+              const currentIndex = editRowIndex;
+            
+              const newData = [...tableData];
+            
+              newData[currentIndex] = editedData;
+            
+              setTableData(newData);
+              setEditRowIndex(null);
+            };
+
+            return(
+                &ltform onSubmit={handleEditFormSubmit}>
+                    ...same code
+                &lt/form>
+            )
+
+        </code>
+      </pre>
+
+
+
+
+
+
+      <h2>Step 7: Adding a Cancel Button</h2>
+      <p>For canceling edits, implement a "Cancel" button:</p>
+      <ul>
+        <li>
+          Create an event handler function called handleCancelClick that sets
+          editRowIndex to null to cancel editing.
+        </li>
+        <li>Pass this function to the EditableRow component.</li>
+      </ul>
+      <h4>App.jsx</h4>
+      <pre>
+        <code class="language-javascript">
+            const handleCancelClick = (event) => {
+                event.preventDefault();
+                setEditRowIndex(null);
+              };
+            
+              return (
+            
+                {tableData.map((item, index) => {
+                    return (
+                    &lt>
+                        {editRowIndex === index ? (
+                        &ltEditableRow
+                            index={index}
+                            editRowData={editRowData}
+                            handleEditRowChange={handleEditRowChange}
+                            handleCancelClick={handleCancelClick}
+                        />
+                        ) : (
+                        &ltReadOnlyRow
+                            item={item}
+                            index={index}
+                            handleEditClick={handleEditClick}
+                            
+                        />
+                        )}
+                    &lt/>
+                    );
+                })}
+            
+              );
+
+        </code>
+      </pre>
+      
+      
+      
+      
+      
+      
+
+      <h2>Step 8: Adding a Delete Button</h2>
+      <p>To allow users to delete rows, add a "Delete" button:</p>
+      <ul>
+        <li>Create a "Delete" button in the ReadOnlyRow component.</li>
+        <li>
+          Implement a handleDeleteClick function to find the index using
+          editRowIndex, create a new array, copy the current contacts, and use
+          splice to remove the contact at the given index.
+        </li>
+      </ul>
+      <h4>App.jsx</h4>
+      <pre>
+        <code class="language-javascript">
+            //            Delete feature
+            const handleDeleteClick = ( index) => {   
+            
+              const newData = [...tableData];
+              //Delete the data at the index
+              newData.splice(index, 1);
+            
+              setTableData(newData);
+            };
+            
+            return(
+                {tableData.map((item, index) => {
+                    return (
+                      &lt>
+                        {editRowIndex === index ? (
+                          &ltEditableRow
+                            index={index}
+                            editRowData={editRowData}
+                            handleEditRowChange={handleEditRowChange}
+                            handleCancelClick={handleCancelClick}
+                          />
+                        ) : (
+                          &ltReadOnlyRow
+                            item={item}
+                            index={index}
+                            handleEditClick={handleEditClick}
+                            handleDeleteClick={handleDeleteClick}
+                          />
+                        )}
+                      &lt/>
+                    );
+                  })}
+            
+            )
+
+        </code>
+      </pre>
+
+
+      <h4>ReadOnlyRow.jsx</h4>
+      <pre>
+        <code class="language-javascript">
+            import React from "react";
+
+            const ReadOnlyRow = ({ item, index, handleEditClick, handleDeleteClick }) => {
+            return (
+                &lt>
+                &lttr key={index}>
+                    &lttd>{item.name}&lt/td>
+                    &lttd>{item.email}&lt/td>
+                    &lttd>{item.phone}&lt/td>
+                    &lttd>
+                    &ltbutton type="button" onClick={() => handleEditClick(index, item)}>
+                        Edit
+                    &lt/button>
+                    &ltbutton type="button" onClick={() => handleDeleteClick(index)}>Delete&lt/button>
+                    
+                    &lt/td>
+                &lt/tr>
+                &lt/>
+            );
+            };
+
+            export default ReadOnlyRow;
+
+
+        </code>
+      </pre>
+
+
+
+
+
+   
+
+      <h2>Step 9: Styling and Enhancements</h2>
+      <p>In the final step, consider enhancing your editable table:</p>
+      <ul>
+        <li>Apply CSS styles to make the table visually appealing.</li>
+        <li>Add validation for form inputs.</li>
+        <li>Implement confirmation dialogs for delete actions.</li>
+        <li>Handle errors gracefully for form submissions.</li>
+      </ul>
+      <p>
+        With these ten steps, you've successfully built an editable table in
+        React that allows users to add, edit, and delete data directly within
+        the table. This dynamic functionality can greatly improve the usability
+        of your web application. Happy coding!
+      </p>
+
+      <p>You can find the full code <a href="#">here</a></p>
+    </div>
+  </body>
+</html>

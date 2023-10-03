@@ -1,0 +1,22 @@
+import React from "react";
+
+const ReadOnlyRow = ({ item, index, handleEditClick, handleDeleteClick }) => {
+  return (
+    &lt>
+      &lttr key={index}>
+        &lttd>{item.name}&lt/td>
+        &lttd>{item.email}&lt/td>
+        &lttd>{item.phone}&lt/td>
+        &lttd>
+          &ltbutton type="button" onClick={() => handleEditClick(index, item)}>
+            Edit
+          &lt/button>
+          &ltbutton type="button" onClick={() => handleDeleteClick(index)}>Delete&lt/button>
+          
+        &lt/td>
+      &lt/tr>
+    &lt/>
+  );
+};
+
+export default ReadOnlyRow;
