@@ -15,6 +15,20 @@
     <script>
       hljs.highlightAll();
     </script>
+    <!-- Google tag (gtag.js) -->
+    <script
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=G-4DF1QP6MK3"
+    ></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+
+      gtag("config", "G-4DF1QP6MK3");
+    </script>
     <style>
       body {
         font-family: Arial, sans-serif;
@@ -376,10 +390,6 @@
         )
       </code></pre>
 
-
-
-
-
       <h2>Step 4: Implementing Edit Functionality</h2>
       <p>To implement the edit functionality:</p>
       <ul>
@@ -396,9 +406,7 @@
           Toggle the edit mode using an if-else statement based on whether
           editRowIndex matches the row index.
         </li>
-        <li>
-          To test this, change the editRowIndex to any number
-        </li>
+        <li>To test this, change the editRowIndex to any number</li>
       </ul>
       <h4>App.jsx</h4>
       <pre>
@@ -427,11 +435,6 @@
         </code>
       </pre>
 
-
-
-
-
-
       <h2>Step 5: Managing Data While Editing</h2>
       <p>To manage data while editing, follow these steps:</p>
       <ul>
@@ -445,10 +448,10 @@
           fields and update editRowData:
         </li>
         <li>
-          This is also used to pre populate the inputs fields with present data 
+          This is also used to pre populate the inputs fields with present data
         </li>
       </ul>
-    <h4>App.jsx</h4>
+      <h4>App.jsx</h4>
       <pre>
         <code class="language-javascript">
             const [editRowData, setEditRowData] = useState({
@@ -474,12 +477,7 @@
         </code>
       </pre>
 
-
-
-
-
-
-    <h4>EditableRow.jsx</h4>
+      <h4>EditableRow.jsx</h4>
       <pre>
         <code class="language-javascript">
            import React from "react";
@@ -525,9 +523,6 @@
         </code>
       </pre>
 
-
-
-
       <h2>Step 6: Adding a Save Button</h2>
       <p>
         To enable saving changes, add a "Save" button in the EditableRow
@@ -540,8 +535,8 @@
         </li>
         <li>
           Implement a handleEditFormSubmit function that constructs an
-          editedData object using editRowData, takes the id from
-          editRowIndex, and updates the contact data.
+          editedData object using editRowData, takes the id from editRowIndex,
+          and updates the contact data.
         </li>
       </ul>
       <h4>App.jsx</h4>
@@ -574,11 +569,6 @@
 
         </code>
       </pre>
-
-
-
-
-
 
       <h2>Step 7: Adding a Cancel Button</h2>
       <p>For canceling edits, implement a "Cancel" button:</p>
@@ -625,12 +615,6 @@
 
         </code>
       </pre>
-      
-      
-      
-      
-      
-      
 
       <h2>Step 8: Adding a Delete Button</h2>
       <p>To allow users to delete rows, add a "Delete" button:</p>
@@ -683,7 +667,6 @@
         </code>
       </pre>
 
-
       <h4>ReadOnlyRow.jsx</h4>
       <pre>
         <code class="language-javascript">
@@ -714,12 +697,6 @@
         </code>
       </pre>
 
-
-
-
-
-   
-
       <h2>Step 9: Styling and Enhancements</h2>
       <p>In the final step, consider enhancing your editable table:</p>
       <ul>
@@ -735,7 +712,7 @@
         of your web application. Happy coding!
       </p>
 
-      <p>You can find the full code <a href="#">here</a></p>
+      <p>You can find the full code <a href="https://github.com/shane-abh/EditableTable" target="_blank">here</a></p>
     </div>
   </body>
 </html>
